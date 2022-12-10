@@ -39,71 +39,82 @@ const Button = styled.button`
   height: 42px;
 `;
 
-const Form = ({ getUsers, onEdit, setOnEdit }) => {
+const Form = ({ getLivros, onEdit, setOnEdit }) => {
   const ref = useRef();
 
   useEffect(() => {
     if (onEdit) {
-      const user = ref.current;
+      const livro = ref.current;
 
-      user.nome.value = onEdit.nome;
-      user.email.value = onEdit.email;
-      user.fone.value = onEdit.fone;
-      user.data_nascimento.value = onEdit.data_nascimento;
+      livro.titulolivro.value = onEdit.titulolivro;
+      livro.isbnlivro.value = onEdit.isbnlivro;
+      livro.idautor.value = onEdit.idautor;
+      livro.editoralivro.value = onEdit.editoralivro;
+      livro.qtdelivrodisponivel.value = onEdit.qtdelivrodisponivel;      
     }
   }, [onEdit]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = ref.current;
+    const livro = ref.current;
 
     if (
-      !user.nome.value ||
-      !user.email.value ||
-      !user.fone.value ||
-      !user.data_nascimento.value
+      !livro.titulolivro.value ||
+      !livro.isbnlivro.value ||
+      !livro.idautor.value ||
+      !livro.editoralivro.value ||
+      !livro.qtdelivrodisponivel.value
     ) {
+      console.log("faltam informações")
       return toast.warn("Preencha todos os campos!");
     }
 
     if (onEdit) {
       await axios
-        .put("http://localhost:4000/" + onEdit.id, {
-          nome: user.nome.value,
-          email: user.email.value,
-          fone: user.fone.value,
-          data_nascimento: user.data_nascimento.value,
+        .put("http://localhost:4000/api/biblioteca/" + onEdit.id, {
+          isbnlivro: livro.isbnlivro.value,
+          titulolivro: livro.titulolivro.value,
+          idautor: livro.idautor.value,
+          editoralivro: livro.editoralivro.value,
+          qtdelivrodisponivel: livro.qtdelivrodisponivel.value
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
     } else {
+      console.log("tentou fazer o post");
       await axios
-        .post("http://localhost:4000", {
-          nome: user.nome.value,
-          email: user.email.value,
-          fone: user.fone.value,
-          data_nascimento: user.data_nascimento.value,
+        .post("http://localhost:4000/api/biblioteca", {
+          isbnlivro: livro.isbnlivro.value,
+          titulolivro: livro.titulolivro.value,
+          idautor: livro.idautor.value,
+          editoralivro: livro.editoralivro.value,
+          qtdelivrodisponivel: livro.qtdelivrodisponivel.value
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
     }
 
-    user.nome.value = "";
-    user.email.value = "";
-    user.fone.value = "";
-    user.data_nascimento.value = "";
+    livro.isbnlivro.value = "";
+    livro.titulolivro.value = "";
+    livro.idautor.value = "";
+    livro.editoralivro.value = "";
+    livro.qtdelivrodisponivel = "";
 
     setOnEdit(null);
-    getUsers();
+    getLivros();
   };
 
   return (
-    <FormContainer ref={ref}>
+    <FormContainer ref={ref} onSubmit={handleSubmit}>
     <InputArea>
         <Label>Titulo</Label>
         <Input name="titulolivro"/>
     </InputArea>
+    <InputArea>
+        <Label>isbn</Label>
+        <Input name="isbnlivro"/>
+    </InputArea>    
     <InputArea>
         <Label>id Autor</Label>
         <Input name="idautor"/>
@@ -111,10 +122,6 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
     <InputArea>
         <Label>Editora</Label>
         <Input name="editoralivro"/>
-    </InputArea>
-    <InputArea>
-        <Label>Publicação</Label>
-        <Input name="anolivro" type="date" />
     </InputArea>
     <InputArea>
         <Label>Qtde Disponível</Label>

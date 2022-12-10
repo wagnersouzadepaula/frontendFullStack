@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Table = styled.table`
@@ -34,24 +33,7 @@ export const Td = styled.td`
   width: ${(props) => (props.width ? props.width : "auto")};
 `;
 
-const GridAutores = ({ autores, setAutores, setOnEdit }) => {
-  const handleEdit = (item) => {
-    setOnEdit(item);
-  };
-
-  const handleDelete = async (id) => {
-    await axios
-      .delete("http://localhost:4000/" + id)
-      .then(({ data }) => {
-        const newArray = autores.filter((user) => user.id !== id);
-
-        setAutores(newArray);
-        toast.success(data);
-      })
-      .catch(({ data }) => toast.error(data));
-
-    setOnEdit(null);
-  };
+const GridAutores = ({autores}) => {
 
   return (
     <Table>
@@ -59,7 +41,6 @@ const GridAutores = ({ autores, setAutores, setOnEdit }) => {
         <Tr>
             <Th> Autor </Th>
             <Th> Nacionalidade </Th>
-
             <Th> ID </Th>
             <Th></Th>
             <Th></Th>
@@ -71,15 +52,6 @@ const GridAutores = ({ autores, setAutores, setOnEdit }) => {
             <Td width="%">{item.nomeautor}</Td>
             <Td width="%">{item.nacionalidadeautor}</Td>
             <Td width="%">{item.idautor}</Td>
-
-            <Td width="%"></Td> {/* Espaço para o botao de editar */}
-            <Td width="%"></Td> {/* Espaço para o botao de excluir */}
-            <Td alignCenter width="5%">
-              <FaEdit onClick={() => handleEdit(item)} />
-            </Td>
-            <Td alignCenter width="5%">
-              <FaTrash onClick={() => handleDelete(item.idlivro)} />
-            </Td>
           </Tr>
         ))}
       </Tbody>

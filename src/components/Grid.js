@@ -41,9 +41,9 @@ const Grid = ({ livros, setLivros, setOnEdit }) => {
 
   const handleDelete = async (id) => {
     await axios
-      .delete("http://localhost:4000/" + id)
+      .delete("http://localhost:4000/api/biblioteca/" + id)
       .then(({ data }) => {
-        const newArray = livros.filter((user) => user.id !== id);
+        const newArray = livros.filter((livro) => livro.id !== id);
 
         setLivros(newArray);
         toast.success(data);
@@ -57,10 +57,10 @@ const Grid = ({ livros, setLivros, setOnEdit }) => {
     <Table>
       <Thead>
         <Tr>
-            <Th> Titulo </Th>
-            <Th> Autor </Th>
-            <Th> Editora </Th>
-            <Th> Qtde </Th>
+            <Th>Titulo</Th>
+            <Th>Autor</Th>
+            <Th>Editora</Th>
+            <Th>Qtde</Th>
             <Th></Th>
             <Th></Th>
         </Tr>
@@ -69,11 +69,11 @@ const Grid = ({ livros, setLivros, setOnEdit }) => {
         {livros.map((item, i) => (
           <Tr key={i}>
             <Td width="%">{item.titulolivro}</Td>
-            <Td width="%">{item.autor}</Td>
+            <Td width="%">{item.idautor}</Td>
             <Td width="%">{item.editoralivro}</Td>
             <Td width="%">{item.qtdelivrodisponivel}</Td>
-            <Td width="%"></Td> {/* Espaço para o botao de editar */}
-            <Td width="%"></Td> {/* Espaço para o botao de excluir */}
+            {/* <Td width="%"></Td>
+            <Td width="%"></Td> */}
             <Td alignCenter width="5%">
               <FaEdit onClick={() => handleEdit(item)} />
             </Td>
