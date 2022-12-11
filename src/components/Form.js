@@ -45,7 +45,7 @@ const Form = ({ getLivros, onEdit, setOnEdit }) => {
   useEffect(() => {
     if (onEdit) {
       const livro = ref.current;
-
+      livro.idlivro.value = onEdit.idlivro;
       livro.titulolivro.value = onEdit.titulolivro;
       livro.isbnlivro.value = onEdit.isbnlivro;
       livro.idautor.value = onEdit.idautor;
@@ -71,16 +71,21 @@ const Form = ({ getLivros, onEdit, setOnEdit }) => {
     }
 
     if (onEdit) {
-      await axios
-        .put("http://localhost:4000/api/biblioteca/" + onEdit.id, {
-          isbnlivro: livro.isbnlivro.value,
-          titulolivro: livro.titulolivro.value,
-          idautor: livro.idautor.value,
-          editoralivro: livro.editoralivro.value,
-          qtdelivrodisponivel: livro.qtdelivrodisponivel.value
-        })
-        .then(({ data }) => toast.success(data))
-        .catch(({ data }) => toast.error(data));
+      try {
+        await axios
+          .put("http://localhost:4000/api/biblioteca/" + livro.idlivro.value, {
+            isbnlivro: livro.isbnlivro.value,
+            titulolivro: livro.titulolivro.value,
+            idautor: livro.idautor.value,
+            editoralivro: livro.editoralivro.value,
+            qtdelivrodisponivel: livro.qtdelivrodisponivel.value
+          })
+          .then(({ data }) => toast.success(data))
+          .catch(({ data }) => toast.error(data));        
+      } catch (error) {
+        console.log(error)
+      }
+      
     } else {
       console.log("tentou fazer o post");
       await axios
@@ -99,7 +104,7 @@ const Form = ({ getLivros, onEdit, setOnEdit }) => {
     livro.titulolivro.value = "";
     livro.idautor.value = "";
     livro.editoralivro.value = "";
-    livro.qtdelivrodisponivel = "";
+    livro.qtdelivrodisponivel.value = "";
 
     setOnEdit(null);
     getLivros();
@@ -107,6 +112,10 @@ const Form = ({ getLivros, onEdit, setOnEdit }) => {
 
   return (
     <FormContainer ref={ref} onSubmit={handleSubmit}>
+    <InputArea>
+        <Label>ID</Label>
+        <Input name="idlivro"/>
+    </InputArea>
     <InputArea>
         <Label>Titulo</Label>
         <Input name="titulolivro"/>

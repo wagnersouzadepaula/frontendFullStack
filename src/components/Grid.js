@@ -57,6 +57,7 @@ const Grid = ({ livros, setLivros, setOnEdit }) => {
     <Table>
       <Thead>
         <Tr>
+            <Th>ID</Th>
             <Th>Titulo</Th>
             <Th>Autor</Th>
             <Th>Editora</Th>
@@ -68,6 +69,7 @@ const Grid = ({ livros, setLivros, setOnEdit }) => {
       <Tbody>
         {livros.map((item, i) => (
           <Tr key={i}>
+            <Td width="%">{item.idlivro}</Td>
             <Td width="%">{item.titulolivro}</Td>
             <Td width="%">{item.idautor}</Td>
             <Td width="%">{item.editoralivro}</Td>
