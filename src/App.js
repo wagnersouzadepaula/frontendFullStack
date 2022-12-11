@@ -33,14 +33,6 @@ function App() {
     }
   };
 
-  // const getAutores = async () => {
-  //   try {
-  //     const resAutor = await axios.get("http://localhost:4000/api/autores");
-  //     console.log(resAutor);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };  
 
   useEffect(() => {
     getLivros();
@@ -55,6 +47,10 @@ function App() {
         <Form onEdit={onEdit} setOnEdit={setOnEdit} getLivros={getLivros} />
         <Grid setOnEdit={setOnEdit} livros={livros} setLivros={setLivros} />
       </Container>
+      <Container>
+        <Title>AUTORES</Title>
+        <GridAutores/>
+      </Container>      
 
       <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
       <GlobalStyle />

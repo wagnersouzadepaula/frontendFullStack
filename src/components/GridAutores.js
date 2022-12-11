@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+
 
 const Table = styled.table`
   width: 100%;
@@ -33,7 +35,24 @@ export const Td = styled.td`
   width: ${(props) => (props.width ? props.width : "auto")};
 `;
 
-const GridAutores = ({autores}) => {
+const GridAutores = () => {
+  const [posts, setAutores] = useState([])
+  const getAutores = async() => {
+    try {
+      const response = await axios.get("http://localhost:4000/api/autores");
+      const autores = response.data
+      setAutores(autores);
+
+    } catch (error) {
+      console.log("Servidor não está disponível")
+    }
+  }
+
+  useEffect(() => {
+
+    getAutores()
+
+  }, [])
 
   return (
     <Table>
@@ -47,7 +66,7 @@ const GridAutores = ({autores}) => {
         </Tr>
       </Thead>
       <Tbody>
-        {autores.map((item, i) => (
+        {posts.map((item, i) => (
           <Tr key={i}>
             <Td width="%">{item.nomeautor}</Td>
             <Td width="%">{item.nacionalidadeautor}</Td>
